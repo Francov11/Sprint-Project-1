@@ -1,20 +1,12 @@
-const users = [
-    {
-        id = 1,
-        name = 'Franco',
-        lastname = 'Velazquez',
-        password = 'hola'
-    },
-    {
-        id = 2,
-        name = 'Facu',
-        lastname = 'Garces',
-        password = 'buenas'
-    }
-]
+let users = {
+    id: 1,
+    name: "Franco",
+    lastName: "Velazquez",
+    user: "francov11"
+};
 
-const user = [];
+let arrayUser = [];
 
-user.push(users);
+arrayUser.push(users);
 
-module.exports = {user};
+module.exports = { arrayUser }
