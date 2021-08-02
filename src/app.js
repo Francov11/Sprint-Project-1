@@ -3,7 +3,8 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
 //Importaciones
-const { arrayUser } = require("./functions");
+const { arrayUser } = require("./users");
+//const { arrayProducts } = require("./products");
 
 
 //Swagger
@@ -14,7 +15,7 @@ const swaggerOptions = {
             version: '1.0.2'
         }
     },
-    apis: ['./src/app.js'],
+    apis: ['./swagger/swagger.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -22,28 +23,17 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app = express();
 app.use(express.json());
 
-/**
- * @swagger
- * /users:
- *  get:
- *    summary: Usuario
- *    description: Listado de usuarios
- *    responses:
- *       200: 
- *         Sucess
- *         description: Listado de usuarios
- */
 app.get('/users', (req, res) => {
     console.log(arrayUser);
     res.send(arrayUser);
 });
 
 app.post('/users', (req, res) => {
-    const users = {
-        name: req.body.name, lastName: req.body.lastname, user: req.body.user
+    let users = {
+        name: req.body.name, email: req.body.email, password: req.body.password, address: req.body.address
     }
     arrayUser.push(users);
-    res.send(arrayUser)
+    res.json(arrayUser)
 });
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
