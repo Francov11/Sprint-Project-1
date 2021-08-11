@@ -1,36 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const {arrUsers} = require('../info/users');
+const { validateEmail, validateLogin } = require('../middlewares/users');
 
-//Importaciones
-const { arrayUser } = require("../info/users");
-const { arrayProducts } = require("../info/products");
-//const {loginUser, newUser} = require('./middlewares');
+router.get('/', function (req, res) {
+    res.json({"users": arrUsers})
+})
 
-router.use(express.json());
+router.post('/', validateEmail, function (req, res) {
+    arrUsers.push(req.body)
+    res.send('Usuario creado')
+})
 
-router.get('/users',  (req, res) => {
-    console.log(arrayUser);
-    res.send(arrayUser);
-});
-
-router.post('/users',(req, res) => {
-
-    let id = req.body.id;
-    let name = req.body.name; 
+/*
+router.post('/login', validateLogin, function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
-    let phoneNumber = req.body.phoneNumber;
-    let address = req.body.address;
-    let admin = req.body.admin;
-
-    let user = new Users ( id, name, email, password, phoneNumber, address, admin);
-
-    arrayUser.push(req.body);
-    res.json(arrayUser)
+    let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password);
+    if(emailExisting) {
+        res.json({'msj': 'Sesion inciada con exito.'})
+    } else {
+        res.status(400).json({ 'msj': 'Usuario inexistente.' })
+    }
 });
+*/
 
-router.post('/users/login', (req, res) => {
-    
+router.post('/login', validateLogin, (req, res) => {
+
 });
 
 module.exports = router;
