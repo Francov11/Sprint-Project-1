@@ -1,46 +1,25 @@
-arrOrders = [
+const arrOrders = [
     {
         id: 1,
-        condition: 'Pendiente',
-        product: 'Pizza',
+        userId: 1,
+        name: 'Franco',
+        condition: {
+            id: 1
+        },
+        detail: [{   
+                product: {
+                id: 1,
+                name: 'Pizza',
+                price: '400'
+                },
+        amount: 2        
+        }],
         payMethod: null,
+        total: 400,
         address: 'addres1'
-
-    },
-    {
-        id: 2,
-        condition: 'Confirmado',
-        product: 'Pizza',
-        payMethod: null,
-        address: 'addres1'
-
-    },
-    {
-        id: 3,
-        condition: 'En preparacion',
-        product: 'Tacos',
-        payMethod: null,
-        address: 'addres1'
-
-    },
-    {
-        id: 4,
-        condition: 'Enviado',
-        product: 'Tacos',
-        payMethod: null,
-        address: 'addres1'
-
-    },
-    {
-        id: 5,
-        condition: 'Entregado',
-        product: 'Pizza',
-        payMethod: null,
-        address: 'addres1'
-
     }
-]
+];
 
-console.log('Orders indo loaded');
+console.log('Orders info loaded');
 
 module.exports = {arrOrders};

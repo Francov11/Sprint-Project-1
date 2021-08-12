@@ -9,8 +9,8 @@ router.get('/', isAdmin, (req, res) => {
     res.json(arrOrders);
 });
 
-router.post('/', (req, res) => {
-
+router.post('/:id/lsofdo/:id', (req, res) => {
+    arrOrders.push(req.body)
 });
 
 module.exports = router;
