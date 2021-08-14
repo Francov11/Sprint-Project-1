@@ -20,3 +20,7 @@ let arrConditions = [
         condition: 'Entregado',
     },
 ]
+
+console.log('Conditions info loaded');
+
+module.exports = {arrConditions};

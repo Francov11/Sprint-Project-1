@@ -13,9 +13,12 @@ function validateEmail(req, res, next) {
 function validateLogin(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
+    let login = req.body.login;
     let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password);
     if(emailExisting) {
+        login = true
         res.json({'msj': 'Sesion inciada con exito.'})
+        next();
     } else {
         res.status(400).json({ 'msj': 'Email o contrasenia incorrecto.' })
     }
@@ -32,4 +35,14 @@ function isAdmin(req, res, next){
     }
 };
 
-module.exports = {validateEmail, validateLogin, isAdmin};
+function isLogin (req, res, next){
+    //let login = req.body.login;
+    let userLogin = arrUsers.find( arrUsers => arrUsers.login === true );
+    if(userLogin){
+        next();
+    } else {
+        return res.status(400).json({"msj": 'El usuario no esta logeado.'})
+    }
+}
+
+module.exports = {validateEmail, validateLogin, isAdmin, isLogin};

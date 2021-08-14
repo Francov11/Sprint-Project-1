@@ -6,6 +6,7 @@ let arrUsers = [
         address: 'address1',
         email: 'franco@nothing.com',
         password: '111',
+        login: false,
         admin: false
     },
     {
@@ -15,6 +16,7 @@ let arrUsers = [
         address: null,
         email: 'admin@nothing.com',
         password: 'admin1',
+        login: true,
         admin: true
     }
 ];
