@@ -1,3 +1,6 @@
+const {conditions} = require('./conditions');
+const {payMeth} = require('./payMethod')
+
 const arrOrders = [
     {
         id: 1,
@@ -14,7 +17,7 @@ const arrOrders = [
                 },
         amount: 2        
         }],
-        payMethod: null,
+        payMeth: 1,
         total: 400,
         address: 'addres1'
     }

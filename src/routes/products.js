@@ -7,6 +7,7 @@ const {arrUsers} = require('../info/users');
 
 
 router.get('/', isAdmin, function (req, res) {
+
     res.json(arrProducts)
 });
 
@@ -16,12 +17,13 @@ router.post('/', isAdmin, (req, res) => {
     res.json({'msj': 'Producto creado'})
 });
 
-//Actualizar producto
+//Actualizar producto // Cambiar 
 router.put('/', isAdmin, (req,res) => {
     arrProducts.push(req.body);
     res.json({'msj': 'Producto actualizado'})
 });
 
+//Ver como hacer para borrar un producto en especifico 
 //Borrar producto
 router.delete('/', isAdmin, (req, res) => {
     arrProducts.splice(req.body, 1);

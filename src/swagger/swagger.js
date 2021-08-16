@@ -2,18 +2,27 @@
  * @swagger
  * /users:
  *  get:
- *    summary: Users
- *    description: Users list
+ *    tags: [Users]
+ *    summary: usuarios
+ *    description: Listado de usuarios
+ *    parameters:
+ *       - in: query
+ *         name: index
+ *         required: true
+ *         description: Index del usuario logueado.
+ *         schema:
+ *           type: integer
+ *           example: -1
  *    responses:
  *       200:
- *         description: Users list
+ *         description: Listado de usuarios
  */
 
 /**
  * @swagger
  * /users:
  *  post:
- *    tags: [auth]
+ *    tags: [Users]
  *    summary: usuarios.
  *    description : Listado de usuarios.
  *    consumes:
@@ -63,7 +72,7 @@
  * @swagger
  * /users/login:
  *  post:
- *    tags: [auth]
+ *    tags: [Users]
  *    summary: usuarios.
  *    description : Listado de usuarios.
  *    consumes:
@@ -91,6 +100,131 @@
  *       description: Usuario logeado
  *      401:
  *       description: Usuario no logeado
+ *      
+ */
+
+/**
+ * @swagger
+ * /products:
+ *  get:
+ *    tags: [Products]
+ *    summary: Productos
+ *    description: Listado de productos
+ *    parameters:
+ *       - in: query
+ *         name: index
+ *         required: true
+ *         description: Index del producto.
+ *         schema:
+ *           type: integer
+ *           example: -1
+ *    responses:
+ *       200:
+ *         description: Listado de productos
+ */
+
+/**
+ * @swagger
+ * /products:
+ *  post:
+ *    tags: [Products]
+ *    summary: Productos.
+ *    description : Listado de Productos.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        name: products
+ *        description: producto a crear
+ *        schema:
+ *          type: object
+ *          required:
+ *            - name
+ *            - price
+ *          properties:
+ *            name:
+ *              description: Nombre del producto
+ *              type: string
+ *              example: Hamburguesa clasica
+ *            price:
+ *              description: Precio del producto
+ *              type: string
+ *              example: 250
+ *    responses:
+ *      201:
+ *       description: Producto Creado
+ *      401:
+ *       description: Error
+ *      
+ */
+
+/**
+ * @swagger
+ * /products:
+ *  post:
+ *    tags: [Products]
+ *    summary: Productos.
+ *    description : Listado de Productos.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        name: products
+ *        description: producto a crear
+ *        schema:
+ *          type: object
+ *          required:
+ *            - name
+ *            - price
+ *          properties:
+ *            name:
+ *              description: Nombre del producto
+ *              type: string
+ *              example: Hamburguesa clasica
+ *            price:
+ *              description: Precio del producto
+ *              type: string
+ *              example: 250
+ *    responses:
+ *      201:
+ *       description: Producto Creado
+ *      401:
+ *       description: Error
+ *      
+ */
+
+
+/**
+ * @swagger
+ * /products/{id}:
+ *  put:
+ *    summary: Modificación de producto segun ID.
+ *    description : Modificación de producto segun ID.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: name that need to be updated
+ *        required: true
+ *        type: integer
+ *      - in: body
+ *        name: Productos
+ *        description: usuario  a modificar
+ *        schema:
+ *          type: object
+ *          required:
+ *            - id
+ *          properties:
+ *            name:
+ *              description: nombre del producto
+ *              type: string
+ *            price:
+ *              description: Precio del producto 
+ *              type: string
+ *    responses:
+ *      201:
+ *       description: Agregado del producto 
  *      
  */
 

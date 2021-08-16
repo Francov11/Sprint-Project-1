@@ -27,7 +27,6 @@ function validateLogin(req, res, next){
 function isAdmin(req, res, next){
     let admin = req.body.admin;
     let Admin = arrUsers.find(user => user.admin === admin);
-
     if(Admin === undefined){
         return res.status(400).json({"msj": 'El usuario no es administrador.'})
     } else {
@@ -36,9 +35,9 @@ function isAdmin(req, res, next){
 };
 
 function isLogin (req, res, next){
-    //let login = req.body.login;
-    let userLogin = arrUsers.find( arrUsers => arrUsers.login === true );
-    if(userLogin){
+    let user = req.params.idUsers;
+    let userLogin = arrUsers.find( users => users.id === user );
+    if(userLogin.login === true){
         next();
     } else {
         return res.status(400).json({"msj": 'El usuario no esta logeado.'})

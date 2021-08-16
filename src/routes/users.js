@@ -1,4 +1,5 @@
 const express = require('express');
+const { arrProducts } = require('../info/products');
 const router = express.Router();
 const {arrUsers} = require('../info/users');
 const { validateEmail, validateLogin } = require('../middlewares/users');
