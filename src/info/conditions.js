@@ -1,3 +1,4 @@
+//Condicion de las ordenes // Orders condition
 let arrConditions = [
     {
         id: 1,

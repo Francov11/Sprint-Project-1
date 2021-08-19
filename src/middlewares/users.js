@@ -1,5 +1,6 @@
 const {arrUsers} = require('../info/users')
 
+//Valida que no se repita el email // Validates that the email doesn't repeat 
 function validateEmail(req, res, next) {
     let email = req.body.email;
     let Email = arrUsers.find(user => user.email === email);
@@ -10,6 +11,7 @@ function validateEmail(req, res, next) {
     }
 }
 
+//Valida el login // Validate login 
 function validateLogin(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
@@ -24,6 +26,7 @@ function validateLogin(req, res, next){
     }
 }
 
+//Valida quien es administrador // Validates who is admin 
 function isAdmin(req, res, next){
     let admin = req.body.admin;
     let Admin = arrUsers.find(user => user.admin === admin);
@@ -34,6 +37,7 @@ function isAdmin(req, res, next){
     }
 };
 
+//Valida quien esta logeado // Validates who is logged 
 function isLogin (req, res, next){
     let user = req.params.idUsers;
     let userLogin = arrUsers.find( users => users.id === user );

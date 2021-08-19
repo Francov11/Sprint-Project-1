@@ -5,6 +5,8 @@ const {arrOrders} = require('../info/orders');
 const {arrProducts} = require('../info/products');
 const {isAdmin, isLogin, validatePayMeth} = require('../middlewares/users');
 
+var idASD = 0;
+
 router.post('/:idUser', isLogin, (req, res) => {
     const { detail, payMethod, address } = req.body;
     let d = new Date();

@@ -1,5 +1,3 @@
-const {conditions} = require('./conditions');
-const {payMeth} = require('./payMethod')
 
 let arrUsers = [
     {

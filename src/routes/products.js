@@ -18,7 +18,7 @@ router.post('/', isAdmin, (req, res) => {
 });
 
 //Actualizar producto // Cambiar 
-router.put('/', isAdmin, (req,res) => {
+router.put('/{id}', isAdmin, (req,res) => {
     arrProducts.push(req.body);
     res.json({'msj': 'Producto actualizado'})
 });
