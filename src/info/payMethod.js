@@ -1,3 +1,4 @@
+//Listado de metodos de pago // List of pay meths
 const payMeth = [
     {
         id: 1,

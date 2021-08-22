@@ -1,3 +1,4 @@
+//Listado de productos // List of products
 let arrProducts = [
     {
         id: 1,

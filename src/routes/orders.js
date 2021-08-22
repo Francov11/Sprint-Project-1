@@ -39,6 +39,7 @@ router.post('/:idUser', isLogin, (req, res) => {
     };
 });
 
+//Lista de ordenes // List of orders
 router.get('/:idUser', isLogin, (req, res) => {
     
 });

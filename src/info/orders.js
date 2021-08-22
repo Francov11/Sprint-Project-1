@@ -1,6 +1,7 @@
 const {conditions} = require('./conditions');
 const {payMeth} = require('./payMethod')
 
+//Listado de ordenes // List of orders
 const arrOrders = [
     {
         id: 1,
