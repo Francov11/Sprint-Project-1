@@ -1,5 +1,6 @@
 const {conditions} = require('./conditions');
 const {payMeth} = require('./payMethod')
+const {product} = require('./products');
 
 //Listado de ordenes // List of orders
 const arrOrders = [
@@ -7,9 +8,7 @@ const arrOrders = [
         id: 1,
         userId: 1,
         name: 'Franco',
-        condition: {
-            id: 1
-        },
+        condition: "Confirmado",
         detail: [{   
                 product: {
                 id: 1,

@@ -196,7 +196,7 @@
 
 /**
  * @swagger
- * /products/{id}:
+ * /products:
  *  put:
  *    summary: Modificación de producto segun ID.
  *    description : Modificación de producto segun ID.

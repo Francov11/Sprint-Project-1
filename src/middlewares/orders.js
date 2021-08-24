@@ -1,4 +1,4 @@
-const { arrOrders } = require("../info/orders")
+const { payMeth } = require("../info/payMethod")
 
 //Valida el metodo de pago // Validate the payment method
 function validatePayMeth (req, res, next){

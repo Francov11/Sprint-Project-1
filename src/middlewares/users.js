@@ -16,7 +16,7 @@ function validateLogin(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
     let login = req.body.login;
-    let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password);
+    let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password && arrUsers.login === false);
     if(emailExisting) {
         login = true
         res.json({'msj': 'Sesion inciada con exito.'})
@@ -39,9 +39,9 @@ function isAdmin(req, res, next){
 
 //Valida quien esta logeado // Validates who is logged 
 function isLogin (req, res, next){
-    let user = req.params.idUsers;
-    let userLogin = arrUsers.find( users => users.id === user );
-    if(userLogin.login === true){
+    let login = req.body.login;
+    let Login = arrUsers.find( users => users.login === login );
+    if(Login === true){ 
         next();
     } else {
         return res.status(400).json({"msj": 'El usuario no esta logeado.'})

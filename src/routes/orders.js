@@ -3,34 +3,31 @@ const router = express.Router();
 
 const {arrOrders} = require('../info/orders');
 const {arrProducts} = require('../info/products');
-const {isAdmin, isLogin, validatePayMeth} = require('../middlewares/users');
+const {isAdmin, isLogin} = require('../middlewares/users');
+const {validatePayMeth} = require('../middlewares/orders')
 
 var idASD = 0;
 
-router.post('/:idUser', isLogin, (req, res) => {
+router.post('/:idUser', isLogin, validatePayMeth, (req, res) => {
     const { detail, payMethod, address } = req.body;
-    let d = new Date();
-    let hour = `${d.getHours()}:${d.getMinutes()}`;
-    let detail_ = String();
+    let detail_ = detail;
     let total = new Float32Array();
 
-    detail.forEach(order => {
+    detail.forEach (order => {
         detail_ += `X${detail.amount}:${detail.arrProduct.name}`;
         total += (detail.amount * detail.arrProduct.price);
-
     });
     
     if (validatePayMeth(payMethod)){
         const myOrder = {
-            id: 1,
-            condition: 1,
-            time: hour,
+            idUsers: Number,
+            condition: Number,
             detail: detail_,
             total: total,
             payMeth: payMethod,
             idUser: idASD,
-            name: 1,
-            adress: 'Avenida siempre viva 123'
+            name: String,
+            address: 'Avenida siempre viva 123'
         };
     arrOrders.push(myOrder)
     res.status(200).json({'msj': myOrder })
