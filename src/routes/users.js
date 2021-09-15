@@ -1,6 +1,6 @@
 const express = require('express');
-const { arrProducts } = require('../info/products');
 const router = express.Router();
+
 const {arrUsers} = require('../info/users');
 const { validateEmail, validateLogin } = require('../middlewares/users');
 
@@ -9,15 +9,28 @@ router.get('/', function (req, res) {
     res.json({"users": arrUsers})
 })
 
-//Login de usuario // User Login
-router.post('/', validateEmail, function (req, res) {
-    arrUsers.push(req.body)
-    res.send('Usuario creado')
+//Registro de usuarios // User register 
+router.post('/register', validateEmail, function (req, res) {
+    const {name, phoneNumber, address, email, password} = req.body
+    const newUser = {
+        id: arrUsers.length,
+        name: name,
+        phoneNumber: phoneNumber,
+        address: address,
+        email: email,
+        password: password,
+        login: false,
+        admin: false
+    }
+
+    arrUsers.push(newUser)
+    res.send('User created')
 })
 
-//Registro de usuarios // User register
+//Login de usuario // User Login
 router.post('/login', validateLogin, (req, res) => {
-
+    const index = arrUsers.findIndex(users => req.body.email === users.email && req.body.password === users.password);
+    arrUsers[index].login = true;
 });
 
 module.exports = router;

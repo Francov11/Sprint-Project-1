@@ -1,14 +1,14 @@
 //Listado de productos // List of products
 let arrProducts = [
     {
-        id: 1,
+        id: 0,
         name: 'Pizza',
         price: '400'
 
     },
     {
-        id: 2,
-        name: 'Tacos',
+        id: 1,
+        name: 'Steak',
         price: '500'
     }
 ];

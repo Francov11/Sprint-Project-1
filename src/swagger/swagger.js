@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /users:
+ * /:
  *  get:
  *    tags: [Users]
  *    summary: usuarios
@@ -20,7 +20,7 @@
 
 /**
  * @swagger
- * /users:
+ * /register:
  *  post:
  *    tags: [Users]
  *    summary: usuarios.
@@ -70,7 +70,7 @@
 
 /**
  * @swagger
- * /users/login:
+ * /login:
  *  post:
  *    tags: [Users]
  *    summary: usuarios.
@@ -105,7 +105,7 @@
 
 /**
  * @swagger
- * /products:
+ * /products/:id:
  *  get:
  *    tags: [Products]
  *    summary: Productos
@@ -125,7 +125,7 @@
 
 /**
  * @swagger
- * /products:
+ * /products/:id:
  *  post:
  *    tags: [Products]
  *    summary: Productos.
@@ -160,43 +160,7 @@
 
 /**
  * @swagger
- * /products:
- *  post:
- *    tags: [Products]
- *    summary: Productos.
- *    description : Listado de Productos.
- *    consumes:
- *      - application/json
- *    parameters:
- *      - in: body
- *        name: products
- *        description: producto a crear
- *        schema:
- *          type: object
- *          required:
- *            - name
- *            - price
- *          properties:
- *            name:
- *              description: Nombre del producto
- *              type: string
- *              example: Hamburguesa clasica
- *            price:
- *              description: Precio del producto
- *              type: string
- *              example: 250
- *    responses:
- *      201:
- *       description: Producto Creado
- *      401:
- *       description: Error
- *      
- */
-
-
-/**
- * @swagger
- * /products:
+ * /products/:id/:idProduct:
  *  put:
  *    summary: Modificación de producto segun ID.
  *    description : Modificación de producto segun ID.

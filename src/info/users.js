@@ -1,7 +1,7 @@
 //Listado de usuarios // List of users
 let arrUsers = [
     {
-        id: 1,
+        id: 0,
         name: 'Franco',
         phoneNumber: '111',
         address: 'address1',
@@ -11,7 +11,7 @@ let arrUsers = [
         admin: false
     },
     {
-        id: 2,
+        id: 1,
         name: 'Admin',
         phoneNumber: null,
         address: null,

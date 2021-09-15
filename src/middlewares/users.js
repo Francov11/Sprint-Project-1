@@ -16,10 +16,9 @@ function validateLogin(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
     let login = req.body.login;
-    let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password && arrUsers.login === false);
+    let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password);
     if(emailExisting) {
-        login = true
-        res.json({'msj': 'Sesion inciada con exito.'})
+        res.status(200).json({ 'msj': 'Secion iniciada.' })
         next();
     } else {
         res.status(400).json({ 'msj': 'Email o contrasenia incorrecto.' })
@@ -28,16 +27,28 @@ function validateLogin(req, res, next){
 
 //Valida quien es administrador // Validates who is admin 
 function isAdmin(req, res, next){
+    /*
     let admin = req.body.admin;
     let Admin = arrUsers.find(user => user.admin === admin);
-    if(Admin === undefined){
-        return res.status(400).json({"msj": 'El usuario no es administrador.'})
-    } else {
+    if(Admin === true){
         next();
-    }
+    } else {
+        return res.status(400).json({"msj": 'El usuario no es administrador.'})
+    }*/
+    const user = (arrUsers.find( arrUsers => arrUsers.id == req.params.id ));
+    if( user ) {
+        if (user.login == false) {
+            res.send("you can't access, log in before");
+        } else if (user.admin == false) {
+            res.send("you can't access");
+            } else { 
+                next();
+            }
+    } //else res.send("ID does not exist");
 };
 
 //Valida quien esta logeado // Validates who is logged 
+/*
 function isLogin (req, res, next){
     let login = req.body.login;
     let Login = arrUsers.find( users => users.login === login );
@@ -46,6 +57,6 @@ function isLogin (req, res, next){
     } else {
         return res.status(400).json({"msj": 'El usuario no esta logeado.'})
     }
-}
+}*/
 
-module.exports = {validateEmail, validateLogin, isAdmin, isLogin};
+module.exports = {validateEmail, validateLogin, isAdmin, }; //isLogin

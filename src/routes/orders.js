@@ -1,55 +1,61 @@
+const { json } = require('express');
 const express = require('express');
 const router = express.Router();
 
+const { arrConditions } = require('../info/conditions');
 const {arrOrders} = require('../info/orders');
+const { payMeth } = require('../info/payMethod');
 const {arrProducts} = require('../info/products');
-const {isAdmin, isLogin} = require('../middlewares/users');
-const {validatePayMeth} = require('../middlewares/orders')
+const { arrUsers } = require('../info/users');
+const { totalAmount } = require('../middlewares/orders');
+const { confirmId } = require('../middlewares/products');
 
-var idASD = 0;
+let id = -1; 
+router.post('/order/:id', confirmId, (req, res) => {
 
-router.post('/:idUser', isLogin, validatePayMeth, (req, res) => {
-    const { detail, payMethod, address } = req.body;
-    let detail_ = detail;
-    let total = new Float32Array();
+    id++
+    date = new Date();
+    const user = (arrUsers.find(user => user.id == req.params.id));
+    price = totalAmount(req);
 
-    detail.forEach (order => {
-        detail_ += `X${detail.amount}:${detail.arrProduct.name}`;
-        total += (detail.amount * detail.arrProduct.price);
-    });
-    
-    if (validatePayMeth(payMethod)){
-        const myOrder = {
-            idUsers: Number,
-            condition: Number,
-            detail: detail_,
-            total: total,
-            payMeth: payMethod,
-            idUser: idASD,
-            name: String,
-            address: 'Avenida siempre viva 123'
-        };
-    arrOrders.push(myOrder)
-    res.status(200).json({'msj': myOrder })
-    } else {
-        res.status(404).send('El metodo de pago es invalido');
+    const {order, payMeth, address} = req.body;
+    const newOrder = {
+        idUser: user.id,
+        idOrder: id,
+        condition: arrConditions[1],
+        price: price,
+        date: `${date.getHours()}:${date.getMinutes()}`,
+        order: order,
+        payMeth: payMeth,
+        address: address
     };
+    arrOrders.push(newOrder);
+    res.json({msj: 'Orden creada'});
 });
 
-//Lista de ordenes // List of orders
-router.get('/:idUser', isLogin, (req, res) => {
-    
+router.get('/prueba/:id', confirmId, (req, res) => {
+    console.log('prueba');
+    const historyUser = (arrOrders.filter(arrOrders => arrOrders.idUser == req.params.id))
+    console.log("hola", historyUser);
 });
 
-router.get('/', isAdmin, (req, res) => {
+router.get('/allOrders/:id', confirmId, (req, res) => {
     res.json(arrOrders);
 });
 
-//cambiar esto 
-router.put('/', isAdmin, (req, res) => {
-    arrOrders.push(req.body);
+router.put('/order/:id/:idOrder', confirmId, (req, res) => {
+    const indexOrder = (arrOrders.findIndex(order => order.idOrder == req.params.idOrder))
+    arrOrders[indexOrder].condition = req.body.newCondition
+    res.json({msj: 'Orden editada'});
 });
 
-
+/*
+router.get('/order/:id', (req, res) => {
+    console.log('Buenas');
+    //const historyUser = (arrOrders.filter(arrOrders => arrOrders.idUser == req.params.id))
+    //console.log("hola", historyUser);
+    //res.send(historyUser);
+});
+*/
 
 module.exports = router;

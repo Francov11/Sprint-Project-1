@@ -1,20 +1,12 @@
 //Listado de metodos de pago // List of pay meths
 const payMeth = [
     {
-        id: 1,
+        id: 0,
         title: 'Cash'
     },
     {
-        id: 2,
+        id: 1,
         title: 'Debit'
-    },
-    {
-        id: 3,
-        title: 'Credit'
-    },
-    {
-        id: 4,
-        title: 'Transfer'
     }
 ];
 

@@ -17,16 +17,18 @@ const swaggerOptions = {
   
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const users = require('./routes/users');
-app.use('/users', users);
+app.use('/', users);
 
 const products = require('./routes/products');
-app.use('/products', products);
+app.use('/', products);
 
 const orders = require('./routes/orders');
-app.use('/orders', orders);
+app.use('/', orders);
 
 app.use('/Sprint-Project-1', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
-app.listen(4000)
+app.listen(9000)
