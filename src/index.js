@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
+const sequelize = require('./database/mysql');
 
 //Configuracion // Config 
+require('dotenv').config();
+
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
@@ -31,4 +34,6 @@ app.use('/', orders);
 
 app.use('/Sprint-Project-1', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
-app.listen(9000)
+app.listen(process.env.EXPRESS_PORT, () => {
+  console.log(`Escuchando puerto ${process.env.EXPRESS_PORT}`)
+});
