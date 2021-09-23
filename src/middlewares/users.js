@@ -12,6 +12,7 @@ function validateEmail(req, res, next) {
 }
 
 //Valida el login // Validate login 
+
 function validateLogin(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
@@ -24,6 +25,7 @@ function validateLogin(req, res, next){
         res.status(400).json({ 'msj': 'Email o contrasenia incorrecto.' })
     }
 }
+
 
 //Valida quien es administrador // Validates who is admin 
 function isAdmin(req, res, next){

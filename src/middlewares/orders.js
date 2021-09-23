@@ -1,14 +1,22 @@
 const { arrOrders } = require("../info/orders");
 const { payMeth } = require("../info/payMethod");
 const { arrProducts } = require("../info/products");
+const { arrUsers } = require("../info/users");
+
+const confirmId = (req, res, next) => {
+
+    const users = (arrUsers.find(users => users.id == req.params.id))
+    if (users){
+      	if(users.login == true) next()
+         else res.send("you can't access, log in before");
+    }else res.send("ID does not exist");
+}
 
 //Valida el metodo de pago // Validate the payment method
-function validatePayMeth (req, res, next){
-    if (payMeth.find(meth => meth.title === payMeth.title)) {
-        return true;
-    } else { 
-        return false;
-    }
+function validateMethod (req, res, next) {
+    const meth = (payMeth.find(payments => payments.title == req.body.payMeth))
+    if(meth) next()
+    else res.json({msj: "mettodo de pago no disponible"});
 }
 
 function totalAmount (req) {
@@ -22,4 +30,4 @@ function totalAmount (req) {
     return (price);
 }
 
-module.exports = { validatePayMeth,  totalAmount};
+module.exports = { totalAmount, validateMethod, confirmId };
