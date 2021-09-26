@@ -1,15 +1,15 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+
 const router = express.Router();
-const Sequelize = require('sequelize');
+require('dotenv').config();
 
 const {arrUsers} = require('../info/users');
 const { validateEmail, validateLogin } = require('../middlewares/users');
 
 const Controller = require('../controllers/users');
-const sequelize = require('../database/mysql');
+const Sequelize = require('../database/mysql');
 const { JsonWebTokenError } = require('jsonwebtoken');
-const { noExtendLeft } = require('sequelize/types/lib/operators');
 
 //Lista de usuarios // List of users
 router.get('/', function (req, res) {

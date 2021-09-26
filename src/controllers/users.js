@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
+
+const {sequelize} = require('sequelize');
 const {arrUsers} = require('../info/users')
+require('dotenv').config();
 
 exports.register = function register (req, res, next) {
     try {

@@ -1,5 +1,5 @@
 const express = require('express');
-const Sequelize = require('sequelize');
+const {Sequelize} = require('sequelize');
 
 require('dotenv').config();
 const app = express();
@@ -8,12 +8,13 @@ app.use(express.json());
 /*const sequelize = new Sequelize('mysql://root@localhost/meeting-24');*/
 const sequelize = new Sequelize(process.env.MYSQL_DB_NAME, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, {
     host: process.env.MYSQL_HOST,
-    dialect: "mysql" ,
+    dialect: "mysql",
     logging: true,
     logging: console.log,
     logging: (...msg) => console.log(msg)
-}
-);
+
+});
+
 console.log('hola')
 async function authenticate_mysql() {
     try {
