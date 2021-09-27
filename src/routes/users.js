@@ -12,9 +12,7 @@ const Sequelize = require('../database/mysql');
 const { JsonWebTokenError } = require('jsonwebtoken');
 
 //Lista de usuarios // List of users
-router.get('/', function (req, res) {
-    res.json({"users": arrUsers})
-})
+router.get('/', Controller.list );
 
 //Registro de usuarios // User register 
 router.post('/register', Controller.register, validateEmail)

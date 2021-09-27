@@ -1,5 +1,6 @@
 const express = require('express');
 const {Sequelize} = require('sequelize');
+const Create = require('../models/users');
 
 require('dotenv').config();
 const app = express();
@@ -25,5 +26,16 @@ async function authenticate_mysql() {
     }
 };
 authenticate_mysql();
+
+const users = Create.usersModels(sequelize, Sequelize);
+
+
+sequelize.sync({ force: false})
+    .then(() => {
+        console.log('Table created')
+    })
+
+
+    
 
 module.exports = {authenticate_mysql}
