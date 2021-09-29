@@ -1,9 +1,13 @@
+require('dotenv').config();
+
 const express = require('express')
 const app = express()
 const sequelize = require('./database/mysql');
+//const {usersModel} = require('./models/users');
+const {productsModels} = require('./models/products')
 
 //Configuracion // Config 
-require('dotenv').config();
+
 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');

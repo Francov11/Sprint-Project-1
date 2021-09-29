@@ -1,18 +1,16 @@
 const jwt = require('jsonwebtoken');
-const {sequelize} = require('sequelize');
+const sequelize = require('../database/mysql');
 
 require('dotenv').config();
 
-const {arrUsers} = require('../info/users')
-const {usersModels} = require('../models/users')
+const { arrUsers } = require('../info/users')
+//const usersModel = require('../models/users')
 
-exports.list = async (req, res, next) => {
+
+exports.list = async function (req, res, next) {
     try{
-        //const users = await usersModels.
-        //res.json(users);
-        cadena = `SELECT * FROM ${usersModels} WHERE id = ${req.params.id};`
-        const respuesta = await sequelize.query(cadena, { type: sequelize.QueryTypes.SELECT });
-        console.log(respuesta);
+        const users = await usersModel.
+        res.json(users);
     }
     catch (err) {
         console.error("Error interno: " + err.message);
@@ -53,18 +51,18 @@ exports.register = function register (req, res, next) {
         res.status(500).send({ status: 'Error interno' });
     }
 };*/
-exports.register = async (req, res, next) => {
+exports.register = async function (req, res, next) {
     try {
-        chain = {
+        const result = await usersModel.create(
+            {
             name: req.body.name,
             phoneNumber: req.body.phoneNumber,
             address: req.body.address,
             email: req.body.email,
             password: req.body.password
-        };
-        console.log(req.body, chain);
-        const result = await usersModels.create(chain);
-        res.json(result.toJSON);
+            }
+        );            
+        res.json(result);
         /*
         const {name, phoneNumber, address, email, password} = req.body
         console.log('signin',password, email);
