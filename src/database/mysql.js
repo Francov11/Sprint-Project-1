@@ -21,7 +21,7 @@ async function authenticate_mysql() {
     try {
         await sequelize.authenticate()
         console.log('Conected to MYSQL');
-        await sequelize.sync({ force: true});
+        await sequelize.sync({ force: false});
         console.log('Synchronized to MYSQL')
     } catch (error) {
         console.error(error.message);

@@ -16,7 +16,7 @@ router.get('/', Controller.list );
 
 //Registro de usuarios // User register 
 router.post('/register', Controller.register, validateEmail)
-
+/*
 router.post('/login/prueba', validateLogin, (req, res) => {
     try{
         const { email, password } = req.body;
@@ -43,8 +43,8 @@ router.post('/login/prueba', validateLogin, (req, res) => {
     }
     
 });
-
+*/
 //Login de usuario // User Login
-//router.post('/login', Controller.login, validateLogin);
+router.post('/login', Controller.login, validateLogin);
 
 module.exports = router;
