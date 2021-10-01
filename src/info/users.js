@@ -1,4 +1,4 @@
-//Listado de usuarios // List of users
+/*Listado de usuarios // List of users
 let arrUsers = [
     {
         id: 0,
@@ -24,4 +24,4 @@ let arrUsers = [
 
 console.log("User info loaded");
 
-module.exports = {arrUsers}
+module.exports = {arrUsers}*/

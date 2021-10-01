@@ -3,9 +3,7 @@ const sequelize = require('../database/mysql');
 
 require('dotenv').config();
 
-const { arrUsers } = require('../info/users')
 const usersModel = require('../models/users')
-
 
 exports.list = async function (req, res, next) {
     try{
@@ -20,16 +18,27 @@ exports.list = async function (req, res, next) {
 
 exports.register = async function (req, res, next) {
     try {
-        const result = await usersModel.create(
-            {
-            name: req.body.name,
-            phoneNumber: req.body.phoneNumber,
-            address: req.body.address,
-            email: req.body.email,
-            password: req.body.password
+        const duplicate = await usersModel.findOne({
+            where: {
+                email: req.body.email
             }
-        );            
-        res.json(result);
+        });
+        console.log(duplicate);
+        if(!duplicate) {
+                const result = await usersModel.create(
+                {
+                name: req.body.name,
+                phoneNumber: req.body.phoneNumber,
+                address: req.body.address,
+                email: req.body.email,
+                password: req.body.password
+                }
+            );
+            res.status(200).json({ msj: 'Register successfully.' });
+        } else {
+            return res.status(400).json({msj: 'The email you entered already exists.'});
+        }            
+        //res.json(result);
         /*
         const {name, phoneNumber, address, email, password} = req.body
         console.log('signin',password, email);
@@ -52,14 +61,20 @@ exports.register = async function (req, res, next) {
 
 
 exports.login = async function (req, res, next) {
-    //const index = usersModel.findIndex(users => req.body.email === users.email && req.body.password === users.password);
-    //arrUsers[index].login = true;
     try {
-        const result = await usersModel.findAll({
+        const result = await usersModel.findOne({
+                where: {
                 email: req.body.email,
                 password: req.body.password
+                }
             });
-        res.json(result);
+        //res.json(result);
+        if(result){
+            res.json({ msj: 'Successfully login.'});
+        } else {
+            res.status(400).json({ msj: 'Email or password incorrect.'})
+        }
+        
     }
     catch (err) {
         console.error("Error interno: " + err.message);
