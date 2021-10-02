@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const sequelize = require('../database/mysql');
+const httpError = require('../helpers/httpError');
 
 require('dotenv').config();
 
@@ -11,8 +12,7 @@ exports.list = async function (req, res, next) {
         res.json(users);
     }
     catch (err) {
-        console.error("Error interno: " + err.message);
-        res.status(500).send({ status: 'Error interno' });
+        httpError(req,res,err);
     }
 }
 
@@ -34,28 +34,25 @@ exports.register = async function (req, res, next) {
                 password: req.body.password
                 }
             );
-            res.status(200).json({ msj: 'Register successfully.' });
+            const {email, password} = req.body
+            console.log('signin',password, email);
+    
+            jwt.sign(req.body, process.env.SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_IN }, (err, token) => {
+                if(err) {
+                    httpError(req,res,err);
+                } else {
+                    req.token = token;
+                    res.status(200).json({ msj: 'Register successfully.' });
+                    res.status(200).json({ status: 'sigIn', token});
+                }
+            });
         } else {
             return res.status(400).json({msj: 'The email you entered already exists.'});
         }            
-        //res.json(result);
-        /*
-        const {name, phoneNumber, address, email, password} = req.body
-        console.log('signin',password, email);
 
-        jwt.sign(req.body, process.env.SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_IN }, (err, token) => {
-            if(err) {
-                console.error("Error interno: " + err.message);
-                res.status(500).send({ status: 'Error interno'});
-            } else {
-                req.token = token;
-                res.json({ status: 'sigIn', token});
-            }
-        });*/
     }
     catch (err) {
-        console.error("Error interno: " + err.message);
-        res.status(500).send({ status: 'Error interno' });
+        httpError(req,res,err);
     }
 };
 
@@ -74,10 +71,24 @@ exports.login = async function (req, res, next) {
         } else {
             res.status(400).json({ msj: 'Email or password incorrect.'})
         }
-        
-    }
+        const {password, email } = req.body;
+        console.log("signup", password, email);
+
+        jwt.sign(
+        req.body,
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: process.env.JWT_EXPIRES_IN },
+        (err, token) => {
+            if (err) {
+            httpError(req, res, err);
+            } else {
+            req.token = token;
+            res.json({ status: "signup", token });
+            }
+        }
+        );  
+        }
     catch (err) {
-        console.error("Error interno: " + err.message);
-        res.status(500).send({ status: 'Error interno' });
+        httpError(req,res,err);
     }
 };
