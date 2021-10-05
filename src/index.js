@@ -3,8 +3,9 @@ require('dotenv').config();
 const express = require('express')
 const app = express()
 const sequelize = require('./database/mysql');
-const {usersModel} = require('./models/users');
-const {productsModels} = require('./models/products')
+const usersModel = require('./models/users');
+const productsModels = require('./models/products');
+const payMethsModel = require('./models/payMethods');
 
 //Configuracion // Config 
 
@@ -33,8 +34,11 @@ app.use('/', users);
 const products = require('./routes/products');
 app.use('/', products);
 
-const orders = require('./routes/orders');
-app.use('/', orders);
+//const orders = require('./routes/payMethods');
+//app.use('/', paymethods);
+
+const paymethods = require('./routes/payMethods');
+app.use('/', paymethods);
 
 app.use('/Sprint-Project-1', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 

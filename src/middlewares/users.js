@@ -1,4 +1,4 @@
-const {arrUsers} = require('../info/users')
+/*const {arrUsers} = require('../info/users')
 
 //Valida que no se repita el email // Validates that the email doesn't repeat 
 function validateEmail(req, res, next) {
@@ -29,14 +29,14 @@ function validateLogin(req, res, next){
 
 //Valida quien es administrador // Validates who is admin 
 function isAdmin(req, res, next){
-    /*
+    
     let admin = req.body.admin;
     let Admin = arrUsers.find(user => user.admin === admin);
     if(Admin === true){
         next();
     } else {
         return res.status(400).json({"msj": 'El usuario no es administrador.'})
-    }*/
+    }
     const user = (arrUsers.find( arrUsers => arrUsers.id == req.params.id ));
     if( user ) {
         if (user.login == false) {
@@ -50,7 +50,7 @@ function isAdmin(req, res, next){
 };
 
 //Valida quien esta logeado // Validates who is logged 
-/*
+
 function isLogin (req, res, next){
     let login = req.body.login;
     let Login = arrUsers.find( users => users.login === login );
@@ -59,6 +59,7 @@ function isLogin (req, res, next){
     } else {
         return res.status(400).json({"msj": 'El usuario no esta logeado.'})
     }
-}*/
+}
 
 module.exports = {validateEmail, validateLogin, isAdmin, }; //isLogin
+*/

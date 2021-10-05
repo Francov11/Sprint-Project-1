@@ -1,4 +1,4 @@
-const { arrOrders } = require("../info/orders");
+/*const { arrOrders } = require("../info/orders");
 const { payMeth } = require("../info/payMethod");
 const { arrProducts } = require("../info/products");
 const { arrUsers } = require("../info/users");
@@ -30,4 +30,4 @@ function totalAmount (req) {
     return (price);
 }
 
-module.exports = { totalAmount, validateMethod, confirmId };
+module.exports = { totalAmount, validateMethod, confirmId };*/

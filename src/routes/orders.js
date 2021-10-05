@@ -1,4 +1,4 @@
-const { json } = require('express');
+/*const { json } = require('express');
 const express = require('express');
 const router = express.Router();
 
@@ -39,12 +39,12 @@ router.get('/order/history/:id', confirmId, (req, res) => {
     console.log("hola", historyUser);
 });
 
-/*historial de los pedidos no funciona 
+historial de los pedidos no funciona 
 router.get('/prueba/:id', confirmId, (req, res) => {
     console.log('prueba');
     const historyUser = (arrOrders.filter(arrOrders => arrOrders.idUser == req.params.id))
     console.log("hola", historyUser);
-});*/
+});
 
 router.get('/allOrders/:id', admin.confirmId, (req, res) => {
     res.json(arrOrders);
@@ -57,13 +57,13 @@ router.put('/order/:id/:idOrder', admin.confirmId, (req, res) => {
     res.json({msj: 'Orden editada'});
 });
 
-/*
+
 router.get('/order/:id', (req, res) => {
     console.log('Buenas');
     //const historyUser = (arrOrders.filter(arrOrders => arrOrders.idUser == req.params.id))
     //console.log("hola", historyUser);
     //res.send(historyUser);
 });
-*/
 
-module.exports = router;
+
+module.exports = router;*/

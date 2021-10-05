@@ -1,3 +1,4 @@
+/*
 const {arrProducts} = require('../info/products')
 const {arrUsers} = require('../info/users')
 
@@ -14,3 +15,4 @@ const confirmId = (req, res, next) => {
 }
 
 module.exports = {confirmId};
+*/

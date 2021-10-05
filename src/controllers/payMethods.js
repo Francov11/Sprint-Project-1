@@ -1,15 +1,14 @@
-const jwt = require('jsonwebtoken');
 const sequelize = require('../database/mysql');
 const httpError = require('../helpers/httpError');
 
 require('dotenv').config();
 
-const productsModel = require('../models/users')
+const payMethsModel = require('../models/payMethods')
 
 exports.list = async function (req, res, next) {
     try{
-        const products = await productsModel.findAll();
-        res.json(products);
+        const result = await payMethsModel.findAll();
+        res.json(result);
     }
     catch (err) {
         httpError(req,res,err);
@@ -18,21 +17,21 @@ exports.list = async function (req, res, next) {
 
 exports.create = async function (req, res, next){
     try {
-        const create = await productsModel.findOne({
+        const result = await payMethsModel.findOne({
             where: {
                 name: req.body.name
             }
         });
-        console.log(create);
-        if(!create) {
-                const result = await productsModel.create(
+        console.log(result);
+        if(!result) {
+                const result = await payMethsModel.create(
                 {
-                name: req.body.name,
-                price: req.body.price
+                name: req.body.name
                 }
             );
+            res.json(result);
         } else {
-            return res.status(400).json({msj: 'The product that you entered already exists.'});
+            return res.status(400).json({msj: 'The paymethod that you entered already exists.'});
         }            
     }
     catch (err) {
@@ -42,9 +41,8 @@ exports.create = async function (req, res, next){
 
 exports.update = async function (req, res, next) {
     try {
-        const result = await productsModel.update({
-            name: req.body.name,
-            price: req.body.price
+        const result = await payMethsModel.update({
+            name: req.body.name
         });
         res.json({ status: result});
     }
@@ -55,7 +53,7 @@ exports.update = async function (req, res, next) {
 
 exports.delete = async function (req, res, next) {
     try {
-        const result = await productsModel.destroy({
+        const result = await payMethsModel.destroy({
             where: { id: req.params.id }
         });
         res.json({ status: result});
