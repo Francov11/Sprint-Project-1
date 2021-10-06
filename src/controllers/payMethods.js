@@ -29,7 +29,8 @@ exports.create = async function (req, res, next){
                 name: req.body.name
                 }
             );
-            res.json(result);
+            await result.save();
+            res.json({state: 'Patmethod created: ' + result});
         } else {
             return res.status(400).json({msj: 'The paymethod that you entered already exists.'});
         }            
