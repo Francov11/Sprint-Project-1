@@ -13,6 +13,6 @@ router.get('/', Controller.list );
 router.post('/register', Controller.register)
 
 //Login de usuario // User Login
-router.post('/login', Controller.login);
+router.post('/login', Controller.login, Controller.checkToken);
 
 module.exports = router;

@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express')
 const app = express()
 const sequelize = require('./database/mysql');
+//const redis = require('./redis/redis');
 const usersModel = require('./models/users');
 const productsModels = require('./models/products');
 const payMethsModel = require('./models/payMethods');

@@ -5,9 +5,10 @@ const router = express.Router();
 //const {confirmId} = require('../middlewares/products')
 
 const Controller = require('../controllers/products');
+const Controller2 = require('../controllers/users')
 
 //Lista de productos // List of products
-router.get('/products/:id', Controller.list);
+router.get('/products', Controller.list, Controller2.checkToken);
 
 //Crear producto // Create product
 router.post('/products/:id', Controller.create);

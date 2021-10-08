@@ -67,10 +67,13 @@ exports.login = async function (req, res, next) {
             });
         //res.json(result);
         if(result){
-            res.json({ msj: 'Successfully login.'});
+            const { email, password } = req.body;
+            const token = await jwt.sign(req.body, process.env.SECRET_KEY, { expiresIn: process.env.JWT_EXPIRES_IN })
+            res.json({ msj: 'Successfully login, TOKEN: ' + token});
         } else {
             res.status(400).json({ msj: 'Email or password incorrect.'})
         }
+        /*
         const {password, email } = req.body;
         console.log("signup", password, email);
 
@@ -86,9 +89,35 @@ exports.login = async function (req, res, next) {
             res.json({ status: "signup", token });
             }
         }
-        );  
+        );*/ 
         }
     catch (err) {
         httpError(req,res,err);
     }
 };
+
+exports.checkToken = async function (req, res, next){
+    try {
+        const bearerHeader = req.headers['authorization'];
+        console.log(bearerHeader);
+        if(typeof bearerHeader !== 'undefined'){
+                const bearer = bearerHeader.split(" ");
+                const bearerToken = bearer[1];
+                req.token = bearerToken
+                jwt.verify(req.token, process.env.SECRET_KEY, (err, data) => {
+                    if(err){
+                        console.log(err);
+                        res.sendStatus(403)
+                    } else {
+                        console.log(data);
+                        req.data = data
+                        next();
+                    }
+                });
+            }
+    }
+    catch (err) {
+        httpError(req, res, err)
+    }
+    
+}
