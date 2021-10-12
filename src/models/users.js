@@ -8,7 +8,6 @@ usersModel.init({
     address: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    login: DataTypes.BOOLEAN,
     admin: DataTypes.BOOLEAN
     
 }, { sequelize, modelName: 'users', underscored: true }

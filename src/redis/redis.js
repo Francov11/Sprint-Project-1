@@ -1,26 +1,21 @@
-/*const redis = require('redis');
 require('dotenv').config();
-const httpError = require('../helpers/httpError');
+const redis = require("redis");
+let redisClient;
 
-// const client = redis.createClient();
-async function conect_redis() {
-    try {
-        const redisClient = await redis.createClient({
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT,
-            db: 0
-        });
+  try {
+    redisClient = redis.createClient({
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      db: 1,
+    }); 
 
-        await redisClient.on("error", function (error) {
-            console.error(error);
-        });
-        console.log('redis conected')
-    }
-    catch (err) {
-        console.log(err.message);
-        //httpError(req, res, err);
-    }
-}
-conect_redis();
+    redisClient.on("error", function (error) {
+      console.error(error);
+    });
+    console.log('Redis Connected');
+  } catch (error) {
+    console.error("Error de acceso a Redis" + error);
+  }
 
-module.exports = redis*/
+
+module.exports = redisClient;

@@ -42,10 +42,11 @@ exports.create = async function (req, res, next){
 
 exports.update = async function (req, res, next) {
     try {
-        const result = await payMethsModel.update({
+        const chain = {
             name: req.body.name
-        });
-        res.json({ status: result});
+        }
+        const result = await payMethsModel.update( chain, { where: { id: req.params.id } });
+        res.send({status: 'Paymethod updated'});
     }
     catch (err) {
         httpError(req, res, err);

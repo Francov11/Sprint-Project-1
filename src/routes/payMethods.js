@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const Controller = require('../controllers/payMethods');
+const ContrillerUsers = require('../controllers/users');
 
 //Lista de metodos de pagos // List of paymethod
-router.get('/paymethod/:id', Controller.list);
+router.get('/paymethod/:id', ContrillerUsers.checkToken, ContrillerUsers.isAdmin, Controller.list);
 
 //Crear metodo de pago // Create payMeth
 router.post('/paymethod/:id', Controller.create);

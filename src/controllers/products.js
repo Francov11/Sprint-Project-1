@@ -1,5 +1,5 @@
 require('dotenv').config();
-//const { RedisClient } = require('redis');
+const redisClient = require('../redis/redis');
 const sequelize = require('../database/mysql');
 const httpError = require('../helpers/httpError');
 
@@ -10,7 +10,7 @@ exports.list = async function (req, res, next) {
     try{
         const products = await productsModel.findAll();
         res.send({products});
-        //RedisClient.set('products', JSON.stringify(products), 'EX', '60');
+        redisClient.set('products', JSON.stringify(products), 'EX', '60');
     }
     catch (err) {
         httpError(req,res,err);
@@ -52,7 +52,7 @@ exports.update = async function (req, res, next) {
             }
         const result = await productsModel.update( chain, { where: { id: req.params.id } });
         res.send({status: 'Product updated'});
-        //RedisClientl.del('products');    
+        redisClient.del('products');    
     }
     catch (err) {
         httpError(req, res, err);
