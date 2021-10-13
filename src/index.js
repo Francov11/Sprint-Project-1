@@ -2,14 +2,17 @@ require('dotenv').config();
 
 const helmet = require('helmet')
 const express = require('express')
-const app = express()
+
+const app = express();
 app.use(helmet());
 
 const sequelize = require('./database/mysql');
 const redis = require('./redis/redis');
+
 const usersModel = require('./models/users');
 const productsModels = require('./models/products');
 const payMethsModel = require('./models/payMethods');
+const addressBookModel = require('./models/addressBook');
 
 //Configuracion // Config 
 const swaggerJsDoc = require('swagger-jsdoc');
