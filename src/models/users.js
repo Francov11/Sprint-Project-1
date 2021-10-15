@@ -8,7 +8,14 @@ usersModel.init({
     address: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    admin: DataTypes.BOOLEAN
+    admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    suspended: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    }
     
 }, { sequelize, modelName: 'users', underscored: true }
 );

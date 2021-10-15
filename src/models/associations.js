@@ -4,3 +4,4 @@ const usersModel = require('./users')
 const addressBookModel = require('./addressBook');
 
 usersModel.belongsTo(addressBookModel);
+addressBookModel.hasMany(usersModel);

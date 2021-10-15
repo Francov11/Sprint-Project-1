@@ -130,38 +130,17 @@ exports.checkToken = async function (req, res, next){
     }   
 };
 
-exports.authenticated = function authenticated(req, res, next) {
-    // TODO: Implementar acceso a base de datos
-    // NOTE: Requiere que la petición incluye en el campo headers una clave (key) de la forma
-    //       Bearer {token}, donde este token haya sido suministrado por signin o signup
-    try {
-      if (!req.headers.authorization) {
-        httpDenied(
-          req,
-          res,
-          "Acceso denegado por falta de información de autorización"
-        );
-      } else {
-        const token = req.headers.authorization.split(" ")[1];
-        jwt.verify(token, process.env.SECRET_KEY, (err, authData) => {
-          if (err) {
-            httpDenied(req, res, "Acceso denegado: " + err.message);
-          } else {
-            req.authData = authData;
-            //TODO: Recuperar data del usuario
-  
-            next();
-          }
-        });
-      }
-    } catch (err) {
-      httpError(req, res, err);
-    }
-  };
   
 exports.isAdmin = async function (req, res, next) {
     try {
-
+        const result = await usersModel.findOne({where: { admin: req.body.admin}});
+        console.log(result);
+        if (result == true) {
+            console.log("error");
+          } else {
+              next();
+            //httpDenied(req, res, err);
+          }
     }
     catch (err) {
         httpError(req, res, err);
