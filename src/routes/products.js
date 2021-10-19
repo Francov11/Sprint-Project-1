@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Controller = require('../controllers/products');
-const Controller2 = require('../controllers/users')
+const Controller2 = require('../controllers/auth')
 
 //Lista de productos // List of products
 router.get('/products', Controller2.checkToken, Controller2.isAdmin, Controller.list);

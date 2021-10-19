@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 require('dotenv').config();
 
-const Controller = require('../controllers/users');
+const Controller = require('../controllers/auth');
+const Controller2 = require('../controllers/users')
 
 //Lista de usuarios // List of users
-router.get('/', Controller.list );
+router.get('/', Controller2.list );
 
 //Registro de usuarios // User register 
 router.post('/register', Controller.register)
