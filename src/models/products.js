@@ -3,8 +3,12 @@ const { DataTypes, Model } = require('sequelize');
 
 class productsModel extends Model { }
 productsModel.init({
-    name: DataTypes.STRING,
-    price: DataTypes.INTEGER
+    name: {
+        type: DataTypes.STRING
+    },
+    price: {
+        type: DataTypes.INTEGER
+    }
     
 }, { sequelize, modelName: 'products', underscored: true }
 );

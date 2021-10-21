@@ -123,15 +123,16 @@ exports.checkToken = async function (req, res, next){
   
 exports.isAdmin = async function (req, res, next) {
     try {
-            const token = req.body.token;
-            //const data = jwt.decode(token, process.env.SECRET_KEY);
-
-            //const email = data.email;
-            const isAdmin = await usersModel.findOne({admin: true}, {where: {admin: req.body.admin}});
+            const isAdmin = await usersModel.findOne({admin: true}, {
+                where: {
+                    admin: req.body.admin
+                }
+            });
+                
             if(isAdmin){
-                next();
+                httpDenied(req, res);
             }else {
-              httpDenied(req, res);
+              next();
           };
     }
     catch (err) {

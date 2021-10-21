@@ -3,18 +3,31 @@ const { DataTypes, Model } = require('sequelize');
 
 class usersModel extends Model { }
 usersModel.init({
-    name:  DataTypes.STRING,
-    phoneNumber:  DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    name:  {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    phoneNumber:  {
+        type: DataTypes.STRING
+    },
+    address: {
+        type: DataTypes.STRING
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password: {
+        type: DataTypes.STRING
+    },
     admin: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: false
     },
     suspended: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: false
     }
     
 }, { sequelize, modelName: 'users', underscored: true }
