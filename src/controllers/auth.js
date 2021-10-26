@@ -123,16 +123,16 @@ exports.checkToken = async function (req, res, next){
   
 exports.isAdmin = async function (req, res, next) {
     try {
-            const isAdmin = await usersModel.findOne({admin: true}, {
+            const isAdmin = await usersModel.findOne({
                 where: {
                     admin: req.body.admin
                 }
             });
                 
-            if(isAdmin){
-                httpDenied(req, res);
+            if(isAdmin == true){
+               next();
             }else {
-              next();
+               httpDenied(req, res);
           };
     }
     catch (err) {
