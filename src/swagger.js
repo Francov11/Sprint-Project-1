@@ -94,7 +94,7 @@
  *            password:
  *              description: Password
  *              type: password
- *              example: franco111
+ *              example: 111
  *    responses:
  *      201:
  *       description: User logged in
