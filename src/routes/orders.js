@@ -7,17 +7,18 @@ const {arrOrders} = require('../info/orders');
 const { payMeth } = require('../info/payMethod');
 const {arrProducts} = require('../info/products');
 const { arrUsers } = require('../info/users');
-const { totalAmount } = require('../middlewares/orders');
-const { confirmId } = require('../middlewares/products');
+const { totalAmount, validateMethod, confirmId, validateOrder, validateCondition } = require('../middlewares/orders');
+const admin = require('../middlewares/products');
 
+//Crear una orden // Create order
 let id = -1; 
-router.post('/order/:id', confirmId, (req, res) => {
+router.post('/order/:id',confirmId, validateOrder, validateMethod,  (req, res) => {
 
     id++
     date = new Date();
     const user = (arrUsers.find(user => user.id == req.params.id));
-    price = totalAmount(req);
-
+    price = totalAmount(req, res);
+    console.log(price)
     const {order, payMeth, address} = req.body;
     const newOrder = {
         idUser: user.id,
@@ -30,32 +31,33 @@ router.post('/order/:id', confirmId, (req, res) => {
         address: address
     };
     arrOrders.push(newOrder);
-    res.json({msj: 'Orden creada'});
+    res.json({msj: 'Order created'});
 });
 
-router.get('/prueba/:id', confirmId, (req, res) => {
-    console.log('prueba');
-    const historyUser = (arrOrders.filter(arrOrders => arrOrders.idUser == req.params.id))
-    console.log("hola", historyUser);
+//Historial de pedidos // History of orders
+router.get('/order/history/:id', confirmId, (req, res) => {
+    const historyUser = arrOrders.filter(orders => orders.idUser == req.params.id)
+    if (historyUser.length == 0){
+        res.status(400).json({ message: "No hiciste ningun pedido" })
+        return
+    } else {
+        console.log(historyUser);
+        res.status(200).json(historyUser)
+    }
+    
 });
 
-router.get('/allOrders/:id', confirmId, (req, res) => {
+//Lista de todos los pedidos // List of all orders
+router.get('/allOrders/:id', admin.confirmId, (req, res) => {
     res.json(arrOrders);
 });
 
-router.put('/order/:id/:idOrder', confirmId, (req, res) => {
-    const indexOrder = (arrOrders.findIndex(order => order.idOrder == req.params.idOrder))
+//Editar estado de una orden // Edit the state of an order 
+router.put('/order/:id/:idOrder', admin.confirmId, validateCondition, (req, res) => {
+    const indexOrder = (arrOrders.findIndex(order => order.idOrder == req.params.idOrder && order.idUser == req.params.id))
+    console.log(indexOrder)
     arrOrders[indexOrder].condition = req.body.newCondition
-    res.json({msj: 'Orden editada'});
+    res.json({msj: 'Order edited'});
 });
-
-/*
-router.get('/order/:id', (req, res) => {
-    console.log('Buenas');
-    //const historyUser = (arrOrders.filter(arrOrders => arrOrders.idUser == req.params.id))
-    //console.log("hola", historyUser);
-    //res.send(historyUser);
-});
-*/
 
 module.exports = router;

@@ -7,7 +7,7 @@ function validateEmail(req, res, next) {
     if (!Email){
         next();
     } else {
-        return res.status(400).json({'msj': 'El email que introdujo ya existe.'});
+        return res.status(400).json({msj: 'The email you entered already exists.'});
     }
 }
 
@@ -18,10 +18,10 @@ function validateLogin(req, res, next){
     let login = req.body.login;
     let emailExisting = arrUsers.find( arrUsers => arrUsers.email === email && arrUsers.password === password);
     if(emailExisting) {
-        res.status(200).json({ 'msj': 'Secion iniciada.' })
+        res.status(200).json({ msj: 'Login successfully.' })
         next();
     } else {
-        res.status(400).json({ 'msj': 'Email o contrasenia incorrecto.' })
+        res.status(400).json({ msj: 'Email or password incorrect.' })
     }
 }
 
@@ -44,7 +44,7 @@ function isAdmin(req, res, next){
             } else { 
                 next();
             }
-    } //else res.send("ID does not exist");
+    } 
 };
 
 //Valida quien esta logeado // Validates who is logged 

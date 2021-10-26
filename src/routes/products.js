@@ -23,7 +23,7 @@ router.post('/products/:id', confirmId, (req, res) => {
     };
 
     arrProducts.push(newProduct);
-    res.json({'msj': 'Producto creado'})
+    res.json({msj: 'Product created'})
 });
 
 //Actualizar producto // Update product 
@@ -38,14 +38,14 @@ router.put('/products/:id/:idProduct',  confirmId, (req,res) => {
     };
 
     arrProducts[indexProduct] = changeProduct
-    res.json({msj:`product edited`})
+    res.json({msj:'Product edited.'})
 });
 
 //Borrar producto // Delete product
 router.delete('/products/:id/:idProduct', confirmId, (req, res) => {
-    const indexProduct = arrProducts.findIndex(products => req.params.idProduct == products.id)
-    arrProducts.splice(req.body, 1);
-    res.json({'msj': 'Producto borrado'});
+    const indexProduct = arrProducts.findIndex(products => products.id == req.params.idProduct)
+    arrProducts.splice(indexProduct, 1);
+    res.json({msj: 'Product deleted'});
 });
 
 module.exports = router;

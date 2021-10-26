@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const {arrUsers} = require('../info/users');
+const { confirmId } = require('../middlewares/orders');
 const { validateEmail, validateLogin } = require('../middlewares/users');
 
 //Lista de usuarios // List of users
-router.get('/', function (req, res) {
-    res.json({"users": arrUsers})
+router.get('/', confirmId, (req, res) => {
+    res.json({"Users": arrUsers})
 })
 
 //Registro de usuarios // User register 

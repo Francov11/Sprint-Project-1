@@ -12,7 +12,7 @@ const swaggerOptions = {
         version: '1.0.0'
       }
     },
-    apis: ['./swagger/swagger.js'],
+    apis: ['./src/swagger.js'],
   };
   
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -31,4 +31,4 @@ app.use('/', orders);
 
 app.use('/Sprint-Project-1', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
-app.listen(4000)
+app.listen(9000)
