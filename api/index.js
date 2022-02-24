@@ -1,12 +1,20 @@
 const express = require('express');
-const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
+const cors = require('cors')
+const passport = require('passport')
 const helmet = require('helmet')
+const session = require('express-session')
+const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors())
+app.use(passport.initialize())
+app.use(session({
+    secret: 'mi-secreto'
+}))
+
+const auth0 = require('./auth0/config/config')
+app.use('/', auth0)
 
 const auth = require('./users/routes/auth');
 app.use('/auth', auth);
