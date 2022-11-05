@@ -1,0 +1,606 @@
+openapi: "3.0.0"
+info:
+  title: API-Delilah-Resto
+  version: "1.2"
+  description: Api para el restaurante Delilah Resto
+
+servers:
+  - url: http://localhost:5000
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # optional, for documentation purposes only
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Users Login
+      summary: Create user
+      description: Allows to create users
+      responses:
+        "201":
+          description: User created
+        "400":
+          description: Repeated email
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': An account is already using that email '}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: name
+                  example: Sophia
+                lastname:
+                  type: string
+                  description: Lastname
+                  example: Olivera
+                email:
+                  type: string
+                  description: Email
+                  example: sophia@nothing.com
+                phoneNumber:
+                  type: integer
+                  description: Phone number of the user
+                  example: 1234
+                password:
+                  type: string
+                  description: Password
+                  example: 1234
+                repeatPassword:
+                  type: string
+                  description: Confirm password
+                  example: 1234
+
+  /auth/login:
+    post:
+      tags:
+        - Users Login
+      summary: User login
+      description: Allows users login 
+      responses:
+        "201":
+          description: User loged
+        "400":
+          description: Incorrect information
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': User logged'}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email
+                  example: sophia@nothing.com
+                password:
+                  type: string
+                  description: Password
+                  example: 1234
+                  
+  /users/list:
+    get:
+      tags:
+        - Users administration
+      summary: Get all users
+      description: You must be an admin
+      responses:
+        "200":
+          description: Successfully request
+            sucess
+        "400":
+          description: You must be logged and have your valid token
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': Invalid token'}
+        "403":
+          description: Forbbiden
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': You must be an admin'}   
+
+                    
+  /products:
+    get:
+      tags:
+        - Products 
+      summary: Get all products
+      description: Allows to see the existing products on the menu
+      responses:
+          "200":
+            description: Show all products
+          "400":
+            description: You must be logged and have your valid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+        
+  /products/add:
+    post:
+      tags:
+        - Products 
+      summary: Add product
+      description: Allows add a new product
+      responses:
+          "200":
+            description: Add product
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Product added!}
+          "400":
+            description: You must be logged and have your valid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Product name
+                  example: Pizza
+                price:
+                  type: integer
+                  description: Product price
+                  example: 500
+                isVisible:
+                  type: boolean
+                  description: Denotes if the product is available
+                  example: true
+
+  /products/update/{idProduct}:
+    put:
+      tags:
+        - Products 
+      summary: Update product
+      description: Allows modify the products
+      responses:
+          "200":
+            description: Update product
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Product updated!}
+          "400":
+            description: You must be logged, have your valid token and the product have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': The ID of the product doesn't exist'}
+      parameters:
+
+          - in: path
+            name: idProduct
+            schema:
+              type: string
+            required: true
+            description: Enter product ID
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Product name
+                  example: Pizza
+                price:
+                  type: integer
+                  description: Product price
+                  example: 500
+                isVisible:
+                  type: boolean
+                  description: Denotes if the product is available
+                  example: true
+   
+  /products/delete/{idProduct}:
+    delete:
+      tags:
+        - Products 
+      summary: Delete product
+      description: Allows deleting products
+      responses:
+          "200":
+            description: Delete product
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Product deleted!}
+          "400":
+            description: You must be logged, have your valid token and the product have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': The ID of the product doesn't exist'}
+      parameters:
+    
+        - in: path
+          name: idProduct
+          schema:
+            type: string
+          required: true
+          description: Enter product ID          
+
+ 
+  /payments:
+    get:
+      tags:
+        - Payment Methods 
+      summary: Get all payment methods
+      description: Allows getting all Payment methods
+      
+      responses:
+          "200":
+            description: Show all payment methods
+          "400":
+            description: You must be logged and have your valid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+        
+  /payments/:
+    post:
+      tags:
+        - Payment Methods 
+      summary: Add payment method
+      description: Allow add a new payment method
+  
+      responses:
+          "200":
+            description: Add payment method
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Payment method created!}
+          "400":
+            description: You must be logged and have your valid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                method:
+                  type: string
+                  description: Nombre del metodo de pago
+                  example: Bitcoin
+
+  /payments/update/{idPayments}:
+    put:
+      tags:
+        - Payment Methods 
+      summary: Update payment method
+      description: Allows update payment method
+      
+      responses:
+          "200":
+            description: Update payment method
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Payment method updated!}
+          "400":
+            description: You must be logged, have your valid token and the payment method ID have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+      parameters:
+          
+          - in: path
+            name: idPayments
+            schema:
+              type: string
+            required: true
+            description: Enter payment method ID
+
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                method:
+                  type: string
+                  description: Payment method name
+                  example: Credit
+
+  /payments/delete/{idPayments}:
+    delete:
+      tags:
+        - Payment Methods 
+      summary: Delete payment method
+      description: Allows deleting a payment method
+      parameters:
+    
+        - in: path
+          name: idPayments
+          schema:
+            type: string
+          required: true
+          description: Enter payment method ID
+      responses:
+          "200":
+            description: Delete payment method
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Payment method delted!}
+          "400":
+            description: You must be logged, have your valid token and the payment method ID have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'error': Invalid token'}
+
+
+        
+  /orders:
+    post:
+      tags:
+        - User Orders 
+      summary: Create orders
+      description: Allows create orders
+      responses:
+        "201":
+          description: Create order
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': Order created. You must confirm the order to be able to create another one'}
+        "400":
+          description: You must be logged, have your valid token and fill all the fields
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': Invalid token'}
+  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: array
+                  description: Array of orders
+                  items:
+                    type: object
+                    properties:
+                      product:
+                        type: string
+                        example: Hotdog
+                      amount:
+                        type: integer
+                        example: 2
+                    
+                methodOfPayment:
+                  type: string
+                  example: Cash
+                shippingAddress:
+                  type: string
+                  example: Evergreen Terrace 742
+
+  /orders/{idOrder}:
+    put:
+      tags:
+        - User Orders
+      summary: Update orders
+      description: Allows update orders
+      responses:
+          "201":
+            description: Update order
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Order updated'}
+          "400":
+            description: You must be logged, have your valid token and the order ID have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+      parameters:
+  
+          - in: path
+            name: idOrder
+            schema:
+              type: string
+            required: true
+            description: Enter order ID
+          
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  type: array
+                  description: Array of orders
+                  items:
+                    type: object
+                    properties:
+                      product:
+                        type: string
+                        example: "Hotdog"
+                      amount:
+                        type: integer
+                        example: 3
+                    
+                methodOfPayment:
+                  type: string
+                  example: cash
+                shippingAddress:
+                  type: string
+                  example: Spooner Street 432
+
+  /orders/confirmOrder/{idOrder}:
+    put:
+      tags:
+        - User Orders
+      summary: Confirm order
+      description: Allows clients confirm their orders
+      responses:
+          "201":
+            description: Confirm order
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Order confirmed'}
+          "400":
+            description: You must be logged, have your valid token and the order ID have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+        
+      parameters:
+          - in: path
+            name: idOrder
+            schema:
+              type: string
+            required: true
+            description: Enter order ID
+
+  /orders/history:
+    get:
+      tags:
+        - User Orders
+      summary: See the history of orders
+      description: Allows users to se their history
+      
+      responses:
+          "200":
+            description: Shows history
+          "400":
+            description: You must be logged and have your valid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Invalid token'}
+
+  /orders/allOrders:
+    get:
+      tags:
+        - Admin Orders
+      summary: Get all orders
+      description: Show all orders
+      responses:
+        "200":
+          description: Get all orders
+        "400":
+          description: You must be logged and have your valid token
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': Invalid token'}
+        "403":
+          description: You must be an admin
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {'message': Invalid token'}       
+              
+  /orders/editState/{idOrder}:
+    put:
+      tags:
+        - Admin Orders
+      summary: Update status
+      description: Allows update status
+      responses:
+          "200":
+            description: Update status
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Status updated!}
+          "400":
+            description: You must be logged, have your valid token and the state ID have to exist
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example: {'message': Status ID doesn't exist'}
+      parameters:
+
+          - in: path
+            name: idOrder
+            schema:
+              type: string
+            required: true
+            description: Enter order ID
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state: 
+                  type: string
+                  description: Status name
+                  example: preparing

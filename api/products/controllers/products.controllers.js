@@ -1,20 +1,35 @@
+require('dotenv')
 const repositories = require('../repositories/products.repositories')
+const redis = require('redis')
 
+//Redis client
+const client = redis.createClient({
+    host: "127.0.0.1",
+    port: 6379,
+  });
+
+client.connect()
+
+//List of products
 const getProducts = async (req, res) => {
     try {
         const products = await repositories.getAll()
 
+        client.set('products', JSON.stringify(products), 'EX', 60 * 60 * 24 * 30)
+            
         res.status(200).json({
-            message: 'Productos obtenidos',
-            product: products,
-            status: 200
-        })
+                message: 'Productos obtenidos',
+                product: products,
+                status: 200
+            })
+
     } catch (error) {
-        console.log('hola')
+        
         res.status(500).json({ error: error.message })
     }
 }
 
+//Create a product
 const createProduct = async (req, res) => {
     try {
         const { name, price } = req.body
@@ -35,18 +50,24 @@ const createProduct = async (req, res) => {
     }
 }
 
+//Update a product
 const updateProduct = async (req, res) => {
     try {
-        const { name, price } = req.body
-        const id = req.params.id
-
+        const { name, price, isVisible } = req.body
+        
+        const { idProduct } = req.params
+        
         const product = {
             name: name,
-            price: price
+            price: price,
+            isVisible: isVisible
         }
-        const filter = { id: id }
+
+        const filter = { _id: idProduct }
 
         await repositories.modifyProduct(filter, product)
+
+        client.del('products')
 
         res.status(200).json({
             message: 'Producto editado',
@@ -58,10 +79,15 @@ const updateProduct = async (req, res) => {
 
 }
 
+//Delete a product
 const deleteProduct = async (req, res) => {
     try {
-        const id = req.params.id
-        await repositories.deleteProduct(id)
+        const { idProduct } = req.params
+        const filter = { _id: idProduct }
+
+        await repositories.deleteProduct(filter)
+
+        client.del('products')
 
         res.status(200).json({
             message: 'Producto eliminado',
@@ -71,6 +97,8 @@ const deleteProduct = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+//Exports
 module.exports = {
     getProducts,
     createProduct,

@@ -1,7 +1,8 @@
 const users = require('../model/users')
-const http = require('../../helpers/httpMessage')
+const http = require ('../../shared/helpers');
 const bcrypt = require('bcrypt')
 
+//Check invalid data 
 const charactersEmail = async (req, res, next) => {
     try {
         const { email } = req.body
@@ -14,10 +15,11 @@ const charactersEmail = async (req, res, next) => {
     }
 }
 
+//Check blank spaces
 const validateUser = async (req, res, next) => {
     try {
-        const { name, lastname, email, phoneNumber,  password, repeatPassword, address } = req.body
-        if (!name || !lastname || !email || !phoneNumber || !password || !repeatPassword || !address) return res.status(404).json({ msg: 'Faltan datos', status: 404 })
+        const { name, lastname, email, phoneNumber,  password, repeatPassword } = req.body
+        if (!name || !lastname || !email || !phoneNumber || !password || !repeatPassword ) return res.status(404).json({ msg: 'Faltan datos', status: 404 })
 
         if( password !== repeatPassword) return res.status(404).json({ msg: 'Contraseñas no coinciden', status: 404 })
         
@@ -29,6 +31,7 @@ const validateUser = async (req, res, next) => {
     }
 }
 
+//Validate login
 const validateLogin = async (req, res, next) => {
     try {
         const { email, password} = req.body
@@ -46,6 +49,7 @@ const validateLogin = async (req, res, next) => {
     }
 }
 
+//Exports  
 module.exports = {
     charactersEmail,
     validateUser,

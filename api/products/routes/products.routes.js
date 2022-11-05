@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { getProducts, createProduct, updateProduct, deleteProduct } = require('../controllers/products.controllers')
-const { validateProduct, validateProductID } = require('../middlewares/middlewares')
+const Controllers = require('../controllers/products.controllers')
+const Middlewares = require('../middlewares/middlewares')
+const Shared = require('../../shared/shared')
 
-router.get('/', getProducts)
+//List of products route
+router.get('/', Shared.isAuthenticated, Shared.isAdmin, Controllers.getProducts)
 
-router.post('/', validateProduct, createProduct)
+//Create a product route
+router.post('/add', Shared.isAuthenticated, Shared.isAdmin, Middlewares.validateProduct, Controllers.createProduct)
 
-router.put('/:id', validateProductID, validateProduct, updateProduct)
+//Update product route
+router.put('/update/:idProduct', Shared.isAuthenticated, Shared.isAdmin, Middlewares.validateProductId, Middlewares.validateProduct, Controllers.updateProduct)
 
-router.delete('/:id', validateProductID, deleteProduct)
+//Delete a product route
+router.delete('/delete/:idProduct', Shared.isAuthenticated, Shared.isAdmin, Middlewares.validateProductId, Controllers.deleteProduct)
 
 module.exports = router

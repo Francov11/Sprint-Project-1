@@ -1,5 +1,6 @@
 const payments = require('../models/payments.model')
 
+//Validations
 const validateMethod = async (req, res, next) => {
     try {
         const { method } = req.body
@@ -13,16 +14,18 @@ const validateMethod = async (req, res, next) => {
     }
 }
 
+//Validate payment id
 const validateMethodID = async (req, res, next) => {
     try {
-        const id = req.params.id
-        validateId = await payments.exists({ id: id });
-        !validateId ?  res.status(404).json({ msg: 'El id no existe', status: 404 }) : next()
-    } catch {
-        res.status(404).json({ msg: 'El id no existe', status: 404 })
-    }
+        validateId = await payments.exists({ _id: req.params.idPayment })
+        !validateId ? res.status(404).send({ msg: 'that id payment does not exist', status: 404 }) : next()
+      } 
+      catch {
+        res.status(404).json({ msg: 'that id payment does not exist', status: 404 })
+      }
 }
 
+//Exports
 module.exports = {
     validateMethod,
     validateMethodID

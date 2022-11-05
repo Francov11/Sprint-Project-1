@@ -1,10 +1,9 @@
-const orders = require('../models/orders.model')
+const orders = require('../models/orders')
 const products = require('../../products/models/products.model')
+const orderStates = require('../models/state')
 const payments = require('../../payments/models/payments.model')
-const orderStates = require('../models/orderStatus.model')
-const users = require('../../users/model/users')
-const {getIdUser} = require('../../shared/shared')
 
+//Calculates price 
 const getPrice = async (req, res) => {
     try {
         const { order } = req.body
@@ -17,7 +16,7 @@ const getPrice = async (req, res) => {
             console.log(amount)
             price += amount * productPrice
             
-            order[i].productPrice = productPrice //agrega los precios del producto. va a ser necesario o se enbebe el objeto??
+            order[i].productPrice = productPrice 
             console.log(price)
             return price
         }
@@ -27,30 +26,83 @@ const getPrice = async (req, res) => {
     }
 }
 
+//Validates order
+const validateOrder = async (req, res, next) => {
+    try {
+        const {state} = req.body
+        const { idOrder } = req.params
+        const filter = {_id: idOrder }
 
-const validateRequest = async (req, res, next) => {
-  try {
-    const { order, methodOfPayment } = req.body
 
-    const idUser = getIdUser(req)
-    const orderUser = await orders.findOne({ idUser: idUser, state: 'new' })
-
-    if (orderUser) return res.status(404).json({ msg: 'You already have a pending order, confirm the order to create another', status: 404 })
-
-    for (let i = 0; i < order.length; i++) {
-      const productExist = await products.exists({ name: order[i].product })
-      if (!productExist) return res.status(404).json({ msg: 'A product entered does not exist. Check the product list', status: 404 })
+        const checkConfirmation = await orders.findOne({filter, state: 'new'})
+        if(!checkConfirmation){
+            next()
+        } else{
+            res.status(404).json({ msg: 'You already have a pending order, confirm the order to create another', status: 404 })
+        }
     }
-
-    const paymentExist = await payments.exists({ method: methodOfPayment })
-    !paymentExist ? res.status(404).json({ msg: 'The payment method does not exist. Check the methods of payments list', status: 404 }) : next()
-  } catch {
-    res.status(404).json({ msg: 'Request denied. Check data', status: 404 })
-  }
+    catch (err) {
+        res.status(500).json({ error: error.message })             
+    }
 }
 
+//Validates method of payment
+const validatePayment = async (req, res, next) => {
+    try {
+        const {methodOfPayment} = req.body
+        const checkPayment = await payments.exists({method: methodOfPayment})
+        if (!checkPayment){
+            return res.status(404).json({ msg: 'The method of payment does not exist', status: 404 })
+        } else {
+            next();
+        } 
+    }
+    catch (err) {
+        res.status(500).json({ error: error.message })             
+    }
+}
 
+//Validate status
+const validateStatus = async (req, res, next) => {
+    try {
+        const {state} = req.body
+        const checkStatus = await orderStates.exists({state: state})
+        if (!checkStatus){
+            return res.status(404).json({ msg: 'The state does not exist', status: 404 })
+        } else {
+            next();
+        } 
+    }
+    catch (err) {
+
+    }
+}
+
+//Validates confirmation
+const validateConfirmation = async (req, res, next) => {
+    try {
+        const {state} = req.body
+        const { idOrder } = req.params
+        const filter = {_id: idOrder }
+
+
+        const checkConfirmation = await orders.findOne({filter, state: 'new'})
+        if(checkConfirmation){
+            next()
+        } else{
+            res.status(404).json({ msg: 'You do not have any new order to be confirmed', status: 404 })
+        }
+    }
+    catch (err) {
+        res.status(500).json({ error: error.message })             
+    }
+}
+
+//Exports
 module.exports = {
-  validateRequest,
-  getPrice
+    getPrice,
+    validateOrder,
+    validatePayment,
+    validateStatus,
+    validateConfirmation
 }

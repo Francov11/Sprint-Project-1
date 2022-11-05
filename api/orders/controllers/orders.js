@@ -1,7 +1,26 @@
+const orders = require('../models/orders')
 const repositories = require('../repositories/orders')
 const {getPrice} = require('../middlewares/orders')
-const {getIdTest} = require('../../shared/shared')
+const helpers = require('../../shared/helpers')
 
+//Get all orders
+const getAllOrders = async (req, res) => {
+    try {
+        console.log('1')
+        const response = await repositories.allOrders();
+        console.log(response)
+        res.status(200).json({
+            message: 'Order completed',
+            product: response,
+            status: 200
+        })
+        return response
+    } catch (error) {
+        return res.status(200).json({ error: error.message })
+    }
+}
+
+//Post an order
 const postOrder = async (req, res) => {
     try {
         const { order, methodOfPayment, shippingAddress } = req.body
@@ -15,145 +34,128 @@ const postOrder = async (req, res) => {
         }
         
         const data = await repositories.postOrder(newOrder)
-
+        
         res.status(200).json({
             message: 'Order completed',
             product: data,
             status: 200
         })
+
+        const response = await data.save()
+        return response
+
     } catch (error) {
         return res.status(200).json({ error: error.message })
     }
 }
 
+//Update an order
 const modifyOrder = async (req, res) => {
     try {
         const { order, methodOfPayment, shippingAddress } = req.body
-  
-        const idUser = getIdTest
-        const filter = { idUser: idUser, state: 'new' }
-      
         const price = await getPrice(req, res)
-        //const description = await getDescription(req, res)
-      
+        const { idOrder } = req.params
+        const filter = { _id: idOrder }
         const update = {
           order: order,
           price: price,
           methodOfPayment: methodOfPayment,
-          //description: description,
           shippingAddress: shippingAddress
         }
+        
         const data = await repositories.updateOrder(filter, update)
-    
-            res.status(200).json({
-                message: 'Order updated',
-                product: data,
-                status: 200
-            })
+        const response = await data.save()
+
+        res.status(200).json({
+            message: 'Order updated',
+            product: data,
+            status: 200
+        })
+        
+        return response
     }
     catch (error) {
+
         return res.status(200).json({ error: error.message })
     }
-  }
+}
 
-const getHistory = async (req, res) => {
+//Get history of orders
+const GetHistory = async (req, res) => {
     try {
-        const idUser = getIdTest
-        const filter = idUser
-        const history = await repositories.getHistory(filter)
-
+        const {idOrder} = req.body
+        const{userId} = req.data
+        const filter = {_id: userId, idOrder}
+        const response = await repositories.getHistory(filter);
+        console.log(response)
         res.status(200).json({
-            message: 'Productos obtenidos',
-            history: history,
+            message: 'History:',
+            product: response,
             status: 200
         })
+        return response
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        return res.status(200).json({ error: error.message })
     }
 }
 
+//Confirm your order
 const confirmOrder = async (req, res) => {
     try {
-        const idUser = getIdTest
-  
-        //const hour = getHour(req)
-        //const number = `#${count++}`
-      
-        const filter = { idUser: idUser, state: 'new' }
-        const update = { state: 'confirmed'}
-      
-        const data = await repositories.confirmOrder(filter, update)
-
-        res.status(200).json({
-            message: 'Order confirmed',
-            history: data,
-            status: 200
-        })
-    }
-    catch(error) {
-        res.status(500).json({ error: error.message })
-    }
-  }
-  
-
-const allOrders = async (req, res) => {
-    try {
-        const orders = await repositories.allOrders()
-
-        res.status(200).json({
-            message: 'Orders:',
-            product: orders,
-            status: 200
-        })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-}
-
-const updateStatus = async (req, res) => {
-    try {
-        const { status } = req.body
-        const id = req.params.id
-
-        const states = {
-            status: status
+        const { state } = req.body
+        const { idOrder } = req.params
+        const filter = { _id: idOrder }
+        const update = {
+            state: 'confirmed'
         }
-        const filter = { id: id }
-
-        await repositories.modifyProduct(filter, states)
+        const data = await repositories.updateOrder(filter, update)
+        const response = await data.save()
 
         res.status(200).json({
-            message: 'Status edited',
+            message: 'Order updated',
+            product: response,
             status: 200
         })
+        
+        return response
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        return res.status(200).json({ error: error.message })
     }
-
 }
 
-const getDescription = async (req, res) => { //agregar description para el historial?
+//Edit status of orders
+const editStatus = async (req, res) => {
     try {
-        const { order } = req.body;
-        let description = "";
+        const {state} = req.body
+        const { idOrder } = req.params
+        const filter = { _id: idOrder }
 
-        for (i = 0; i < order.length; i++) {
-            const product = await products.findOne({ name: order[i].product })
-            const info = `${order[i].amount}x${product.abbreviation}`
+        const update = {
+            state: state
+          }
+          
+        const data = await repositories.stateOrder(filter, update)
+        const response = await data.save()
+  
+          res.status(200).json({
+              message: 'Status updated',
+              product: data,
+              status: 200
+          })
+          
+          return response
 
-            description += info;
-        }
-        return description
-    } catch {
-        res.status(404).json({ msg: 'Request denied. Check data', status: 404 })
+    } catch (error) {
+        return res.status(200).json({ error: error.message })
     }
 }
 
+//Exports
 module.exports = {
     postOrder,
     modifyOrder,
-    confirmOrder,
-    getHistory,
-    allOrders,
-    updateStatus
+    GetHistory,
+    editStatus,
+    getAllOrders,
+    confirmOrder
 }

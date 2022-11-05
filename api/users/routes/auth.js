@@ -1,17 +1,14 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-
-const router = express.Router();
 require('dotenv').config();
-
+const express = require('express');
+const router = express.Router();
 const ControllerAuth = require('../controllers/auth');
-const Shared = require('../../shared/shared')
 const Middleware = require('../middlewares/middlewares')
+const Shared = require('../../shared/shared')
 
-//Registro de usuarios // User register 
+//User register route 
 router.post('/register', Middleware.charactersEmail, Middleware.validateUser, ControllerAuth.register)
 
-//Login de usuario // User Login
-router.post('/login' , Middleware.validateLogin ,ControllerAuth.login);//,Shared.isSuspended
+//User Login route
+router.post('/login' ,Middleware.validateLogin , ControllerAuth.login);// Shared.isSuspended,
 
 module.exports = router;

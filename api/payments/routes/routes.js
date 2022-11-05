@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { getPayments, createPayment, updatePayment, deletePayment } = require('../controllers/payments.controllers')
-const { validateMethod, validateMethodID } = require('../middlewares/middlewares')
+const Controllers = require('../controllers/payments.controllers')
+const Middlewares = require('../middlewares/middlewares')
+const Shared = require('../../shared/shared')
 
-router.get('/', getPayments)
+//List of payments route
+router.get('/', Shared.isAuthenticated, Shared.isAdmin, Controllers.getPayments)
 
-router.post('/', validateMethod, createPayment)
+//Create a payment method route
+router.post('/', Shared.isAuthenticated, Shared.isAdmin, Middlewares.validateMethod, Controllers.createPayment)
 
-router.put('/:id', validateMethodID, validateMethod, updatePayment)
+//Update a payment method route
+router.put('/update/:idPayment', Shared.isAuthenticated, Shared.isAdmin, Middlewares.validateMethodID, Middlewares.validateMethod, Controllers.updatePayment)
 
-router.delete('/:id', validateMethodID, deletePayment)
+//Delete a payment method id
+router.delete('/delete/:idPayment', Shared.isAuthenticated, Shared.isAdmin, Middlewares.validateMethodID, Controllers.deletePayment)
 
+//Exports
 module.exports = router

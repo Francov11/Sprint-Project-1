@@ -1,14 +1,13 @@
 const users = require ('../model/users')
-const Error = require ('../../helpers/httpMessage')
 
+//List of users request
 const findAll = async (req,res) =>  await users.find(); 
 
-const update = async (filter, update) => await users.findOneAndUpdate(filter, update, { returnOriginal: false });
+//Update users request
+const update = async (filter, update) => await users.findOneAndUpdate(filter, update);
 
-const deleteUser = async (filter) => { await users.findByIdAndDelete (filter) }
-
+//Exports
 module.exports = {
     findAll,
     update,
-    deleteUser
 }

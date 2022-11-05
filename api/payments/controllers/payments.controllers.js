@@ -1,5 +1,6 @@
 const repositories = require('../repositories/payments.repositories')
 
+//List of payments
 const getPayments = async (req, res) => {
     try {
         const payments = await repositories.getAll()
@@ -14,6 +15,7 @@ const getPayments = async (req, res) => {
     }
 }
 
+//Create a payment method
 const createPayment = async (req, res) => {
     try {
         const { method } = req.body
@@ -31,13 +33,13 @@ const createPayment = async (req, res) => {
     }
 }
 
+//Update a payment method
 const updatePayment = async (req, res) => {
     try {
         const { method } = req.body
-        const id = req.params.id
-
-        const data = { method: method }
-        const filter = { id: id }
+        const { idPayment } = req.params
+        const data = { method: method}
+        const filter = { _id: idPayment }
 
         await repositories.modifyMethod(filter, data)
 
@@ -51,10 +53,12 @@ const updatePayment = async (req, res) => {
 
 }
 
+//Delete a payment method
 const deletePayment = async (req, res) => {
     try {
-        const id = req.params.id
-        await repositories.deleteMethod(id)
+        const { idPayment } = req.params
+        const filter = { _id: idPayment }
+        await repositories.deleteMethod(filter)
 
         res.status(200).json({
             message: 'metodo de pago eliminado',
@@ -64,6 +68,8 @@ const deletePayment = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+
+//Exports
 module.exports = {
     getPayments,
     createPayment,
