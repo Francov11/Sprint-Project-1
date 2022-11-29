@@ -7,10 +7,10 @@ const bcrypt = require ('bcrypt')
 const register = async (req, res) => {
     try {
         const { name, lastname, email, phoneNumber, password} = req.body 
-        console.log('line12')
+        //console.log('line12')
         const passwordHash = await bcrypt.hash(password, 8)
 
-        console.log('line14')
+        //console.log('line14')
         const newUser = {
             name: name, 
             lastname: lastname,
